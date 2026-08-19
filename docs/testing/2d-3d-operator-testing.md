@@ -3,18 +3,9 @@ title: 2D 与 3D 算子测试体系
 topic: testing
 projects:
   - name: OperatorAutoTest
-    dir_name: OperatorAutoTest
     markers: ['OperatorAutoTest.csproj', 'Program.cs']
-    legacy_path: 'E:\Project\嘉立讯标准软件\自研算子\OperatorAutoTest'
   - name: CY3DOpTest
-    dir_name: CY3DOpTest
     markers: ['CY3DOpTest.csproj', 'TestHarness.cs', 'Suites.cs', 'Synthetic.cs']
-    legacy_path: 'E:\CarveYu\carvedyu\tools\CY3DOpTest'
-path_vars:
-  JLX: '嘉立讯标准软件仓库根（旧主机 E:\Project\嘉立讯标准软件）'
-  CARVEDYU: 'carvedyu 活跃主线仓库根（旧主机 E:\CarveYu\carvedyu）'
-  CARVEDYU_STALE: 'carvedyu 停滞副本，别在这改 3D（旧主机 E:\Project\HuikeSmart\carvedyu）'
-  DOCS: '全局经验文档目录（旧主机 E:\Document）'
 status: 活跃
 last_updated: 2026-08-19
 ---
@@ -24,24 +15,11 @@ last_updated: 2026-08-19
 > 生成日期：**2026-08-19**（林工 / fuzhao.lin@nexai-tech.co）
 > 用途：**换到另一台开发主机后，靠这份文档把 2D、3D 算子测试跑起来并继续开发**。
 > 只讲 2D（JET2DVis 自研算子）和 3D（carvedyu PointCloud3D 双后端）两套体系。
-> 板端（包裹检测/灰度仪）那套见 `%DOCS%\算子测试体系总结.md` 第四章，本文不重复。
+> 板端（包裹检测/灰度仪）那套见《算子测试体系总结》第四章（那份不在本经验库），本文不重复。
 > 配套文档：[DiagAgent 现场诊断助手](../agent/diagagent-field-diagnosis.md)（同批生成）。
 
 ---
 
-## 路径约定
-
-正文里的路径一律用变量写，**不带盘符**。落到本机时按下表替换（或在经验库根的 `paths.local.json` 里填一次，`/sync-experience` 会自动解析）。
-
-| 变量 | 指向 | 旧主机上的值 |
-|---|---|---|
-| `%JLX%` | 嘉立讯标准软件仓库根 | `E:\Project\嘉立讯标准软件` |
-| `%CARVEDYU%` | carvedyu **活跃主线**仓库根 | `E:\CarveYu\carvedyu` |
-| `%CARVEDYU_STALE%` | carvedyu 停滞副本，**别在这改 3D** | `E:\Project\HuikeSmart\carvedyu` |
-| `%DOCS%` | 全局经验文档目录（不在本经验库内） | `E:\Document` |
-| `%ProgramFiles%` | Windows 标准环境变量，本身即通用 | — |
-
----
 
 ## 0. 三十秒导航
 
@@ -64,7 +42,7 @@ last_updated: 2026-08-19
 | | **体系 A：2D 算子鲁棒性矩阵 + A/B 对照** | **体系 B：3D 算子黄金对拍** |
 |---|---|---|
 | 被测对象 | JET2DVis `ImageProcessToolkit`（8 个注册算子 + `*BySelf` 自研算子） | carvedyu `CYImageProcessToolkit\PointCloud3D`（Halcon 后端 vs `Managed\` 自研后端） |
-| 工具位置 | `%JLX%\自研算子\OperatorAutoTest\` | `%CARVEDYU%\tools\CY3DOpTest\` |
+| 工具 | `OperatorAutoTest`（「自研算子」外层仓库内） | `CY3DOpTest`（carvedyu 仓库 `tools\` 下） |
 | 规模 | 8 算子 × 5 通道 × 13 ROI（单张彩图 520 用例）+ 3 个 A/B 模式 | 44 常规用例 + 3 perf + 1 条件用例，30 条带容差基线 |
 | 真值来源 | 无真值（鲁棒性）／合成图解析真值／Halcon 互比 | 种子化合成点云解析真值 + `golden_halcon.txt` 黄金基线 |
 | 核心判据 | **不许异常/超时/崩溃**；ROI 全在图外必须 false + error | **不许崩进程、不许 NaN/Inf**；指标在容差内 |
@@ -80,15 +58,15 @@ last_updated: 2026-08-19
 
 | 内容 | 路径 | 说明 |
 |---|---|---|
-| 2D 测试图库 | `%JLX%\测试图\自研算子测试图片\{1,2,3}` | 20/17/24 张产线 NG 图，子文件夹=产品。没有它只能跑合成图冒烟 |
+| 2D 测试图库 | 「自研算子测试图片」图库的 `{1,2,3}` 三个子目录 | 20/17/24 张产线 NG 图，子文件夹=产品。没有它只能跑合成图冒烟 |
 | 2D 当前基线报告 | `OperatorAutoTest\_autotest_reports\abshape_real_20260723_110606\` | 模板匹配 A/B 的对比基准，丢了就没有参照 |
 | blob A/B 历史报告 | `自研算子\_autotest_reports\abblob_real_20260812_*` | 8-12 blob 验收留档 |
-| **外层仓库整目录** | `%JLX%\自研算子\` | ⚠ **外层仓库没有任何 git remote**，推不出去。迁移只能整目录拷（含 `.git` 和未提交的工作区改动），否则 DiagAgent 那批已验证未提交的改动直接丢 |
+| **外层仓库整目录** | 「自研算子」外层仓库 | ⚠ **外层仓库没有任何 git remote**，推不出去。迁移只能整目录拷（含 `.git` 和未提交的工作区改动），否则 DiagAgent 那批已验证未提交的改动直接丢 |
 | 3D 点云测试数据（可选） | `--cloud` 指定的真实点云文件 | 不给就不注册 realdata 那条用例 |
 
 ### 2.2 工具链
 
-- **VS 2022 Preview 的 MSBuild**：`%ProgramFiles%\Microsoft Visual Studio\2022\Preview\MSBuild\Current\Bin\MSBuild.exe`。
+- **必须用 VS 2022 *Preview* 版自带的 `MSBuild.exe`**（`MSBuild\Current\Bin\` 下那个）。
   **`dotnet build` 编不了 JET2DVis 主工程**（.resx 报 MSB3822/3823），必须用 VS MSBuild。算子库和 OperatorAutoTest 可以用 dotnet。
 - .NET Framework 4.7.2 / 4.8 开发包，x64。
 - **Halcon 授权**：A/B 对照要跑 Halcon 侧才需要。授权不可用时 A/B 会**自动降级为只验自研**（summary 里写"Halcon 不可用"）——⚠ **别把降级当通过**。
@@ -97,8 +75,10 @@ last_updated: 2026-08-19
 ### 2.3 编译顺序（2D，顺序错了跑的是旧算子）
 
 ```powershell
+# 在「自研算子」外层仓库根下执行
+# $msbuild = VS 2022 Preview 版的 MSBuild.exe
 # 1) 先编算子库
-& "%ProgramFiles%\Microsoft Visual Studio\2022\Preview\MSBuild\Current\Bin\MSBuild.exe" `
+& $msbuild `
   JET2DVis\ImageProcessToolkit\ImageProcessToolkit.csproj -p:Configuration=Debug -v:minimal -nologo
 # 2) 再编测试工程
 dotnet build OperatorAutoTest -c Debug
@@ -115,7 +95,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File DevAgent\automation\build.ps
 ### 2.5 仓库布局（**双仓库，必须搞清**）
 
 ```
-%JLX%\自研算子\        ← 外层仓库（无 remote，纯本地）
+自研算子\                              ← 外层仓库（无 remote，纯本地）
 ├── OperatorAutoTest\                      测试宿主
 ├── DiagAgent\  DevAgent\  Web\
 └── JET2DVis\                              ← 独立 git 仓库（有 remote），外层已 ignore
@@ -198,7 +178,7 @@ OperatorAutoTest\bin\Debug\OperatorAutoTest.exe --ab-shape
 
 ### 4.1 组成
 
-- 工程 `%CARVEDYU%\tools\CY3DOpTest\`：`Program.cs`(CLI) / `TestHarness.cs`(断言·Golden·Report) / `Synthetic.cs`(合成数据) / `Suites.cs`(全部用例)。
+- 工程 `tools\CY3DOpTest\`（carvedyu 仓库内）：`Program.cs`(CLI) / `TestHarness.cs`(断言·Golden·Report) / `Synthetic.cs`(合成数据) / `Suites.cs`(全部用例)。
 - 基线 `tools\CY3DOpTest\golden_halcon.txt`（30 条带容差指标，**随代码进版本管理**；`bin\Debug` 下那份是历史残留，别用）。
 - **双后端完全分离**：`PointCloud3D\*.cs`（Halcon）与 `PointCloud3D\Managed\*.cs`（纯 C# 自研）互不调用，入口类一行分发（如 `PointCloudFitter.cs:37`）。切换 = `CY3DBackend.Current`（环境变量 `CY3D_BACKEND=managed` 或 `--backend managed`）。`PointCloudProcessor` / `PointCloudMeasure` 已后端无关。
 - 自研后端内容：`CpuPointCloud`、`ManagedFitter`（平面 PCA / 球 Kasa+GN / 圆柱主轴候选+LM）、`ManagedRegistration`（**点到面 ICP**——点到点在网格采样面上会被格点锁死、收敛停在半格距）、`ManagedCompare`（KD-tree NN）、`ManagedPointCloudIO`、`KdTree3`、`MathUtil3D`。
@@ -309,9 +289,9 @@ CY3DOpTest.exe --backend halcon|managed [--op A,B] [--tags accuracy,robust] [--p
 | 外层分支 | `claude/req-20260810_171915`、`claude/diagagent-*`、`claude/req-20260814_diagregress` | 其他交付/历史分支 |
 | 内层 `JET2DVis` | `main` = `9f2e64a` | 干净。remote `agent` 存在但 main 未配 upstream，**未 push** |
 | 内层分支 | `claude/req-20260812_blobself` = `e4ea5de` | blob Find 系列自研实现，**未合并、待审核** |
-| carvedyu | `%CARVEDYU%` `main` = `ce3ec89` | 3D 相关文件自 08-06 未动 |
+| carvedyu | `main` = `ce3ec89` | 3D 相关文件自 08-06 未动 |
 
-⚠ **carvedyu 有两个分叉副本**：`%CARVEDYU%` 是活跃主线（3D 体系、`docs\adr`、`New3D` 都在这），`%CARVEDYU_STALE%` 停在 2026-05（只有 `docs\ai-chat` 评测集）。**别在错的副本上改 3D。**
+⚠ **carvedyu 有两个分叉副本，别在错的那份上改 3D。** 认副本看内容，不看位置：活跃主线那份有 `tools\CY3DOpTest\`、`docs\adr\`、`New3D\`；另一份停在 2026-05，只有 `docs\ai-chat` 评测集。
 
 ### 7.2 待办清单
 
@@ -355,5 +335,5 @@ CY3DOpTest.exe --backend halcon|managed [--op A,B] [--tags accuracy,robust] [--p
 | `CY3DBackend.Current` | 3D 后端开关，`CY3D_BACKEND=managed` 或 `--backend managed` |
 | `golden_halcon.txt` | 3D 黄金基线，30 条带容差指标，随代码进版本管理 |
 | `abshape_real_20260723_110606` | 2D 模板匹配当前基线报告目录 |
-| 测试图库 | `%JLX%\测试图\自研算子测试图片\{1,2,3}`（不在仓库） |
-| VS MSBuild | `%ProgramFiles%\Microsoft Visual Studio\2022\Preview\MSBuild\Current\Bin\MSBuild.exe`（主工程只能用它） |
+| 测试图库 | 「自研算子测试图片」`{1,2,3}` 三个子目录（不在仓库） |
+| VS MSBuild | VS 2022 *Preview* 版自带的 `MSBuild.exe`（主工程只能用它） |

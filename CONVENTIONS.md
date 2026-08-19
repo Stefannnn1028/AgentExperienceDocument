@@ -12,19 +12,14 @@
 ---
 title: 人类可读的中文标题
 topic: agent | testing | algorithms | engineering
-projects:                          # 这份文档覆盖的项目，可多个
-  - name: DiagAgent
-    dir_name: DiagAgent            # 跨主机识别用：目录名
-    markers: ['webapp.py', 'agent.py']   # 兜底识别用：必须同时存在的特征文件
-    legacy_path: 'E:\Project\嘉立讯标准软件\自研算子\DiagAgent'   # 历史值，仅供追溯，不参与匹配
-path_vars:                         # 正文里用到的路径变量
-  JLX: '嘉立讯标准软件仓库根（旧主机 E:\Project\嘉立讯标准软件）'
+projects:                                    # 这份文档覆盖的项目，可多个
+  - name: DiagAgent                          # 项目名，跨主机识别用
+    markers: ['webapp.py', 'agent.py']       # 兜底识别：必须同时存在的特征文件
 status: 活跃 | 归档 | 停滞
 last_updated: YYYY-MM-DD
 ---
 ```
 
-> YAML 里 Windows 路径必须用**单引号**——双引号中 `\` 会被当转义符。
 
 正文推荐结构（顺序可调，但前三节别省）：
 
@@ -50,21 +45,22 @@ last_updated: YYYY-MM-DD
 - git log 能查到的（"某月某日修了 xx"）—— 除非那次修复留下了必须知道的结论
 - 泛泛的最佳实践（"要写测试"）—— 除非附带本项目的具体做法
 
-## 3. 路径写法
+## 3. 不写机器上的路径
 
-**正文里不许出现带盘符的绝对路径。** 换一台主机盘符就变了，写死的路径是文档最先烂掉的部分。
+这里记的是**经验**，不是某台机器的目录结构。盘符和绝对路径换台机器就全错，是文档最先烂掉的部分。
 
-| 写法 | 用在哪 |
+| 不要写 | 改成 |
 |---|---|
-| `%%VAR%%\子路径\` | 项目相关路径。变量在 front matter 的 `path_vars` 里定义，并在文档「路径约定」一节列表说明 |
-| `%%LOCALAPPDATA%%`、`%%ProgramFiles%%` 等 | Windows 标准环境变量，直接用，不必定义 |
-| `<非系统盘>`、`<项目根>` | 没有固定值、只表达约束的位置 |
-| `[标题](../topic/file.md)` | 引用本经验库内的其他文档，用仓库相对链接 |
+| `E:\Project\嘉立讯标准软件\自研算子\` | 「自研算子」外层仓库 |
+| `E:\CarveYu\carvedyu\tools\CY3DOpTest\` | `tools\CY3DOpTest\`（carvedyu 仓库内） |
+| `C:\Users\lin\AppData\Local\Ollama\server.log` | Ollama 的 `server.log` |
+| `C:\Program Files\...\MSBuild.exe` | VS 2022 *Preview* 版自带的 `MSBuild.exe` |
 
-每份文档正文开头放一张「路径约定」表，列出它用到的变量。各主机的实际值填在仓库根的
-`paths.local.json`（从 `paths.local.json.example` 复制，**不进 git**）。
+**仓库内的相对路径照写**——`OperatorAutoTest\Program.cs`、`ImageProcessToolkit2D.cs:7106`、
+`PointCloud3D\Managed\*.cs` 这类是知识本身，换机器也不变，该写就写，还要带行号。
 
-新引入一个变量时，三处都要加：front matter 的 `path_vars`、文档的「路径约定」表、`paths.local.json.example`。
+要区分同一个东西的两份副本时，**按内容认，别按位置认**：说「有 `New3D\` 的那份是主线」，
+而不是「E 盘那份是主线」。引用本经验库内的其他文档用相对链接 `[标题](../topic/file.md)`。
 
 ---
 
@@ -76,7 +72,7 @@ last_updated: YYYY-MM-DD
 4. **状态段必须刷新。** 每次更新都重写"当前状态与欠账"，这段最容易变陈旧且危害最大。
 5. **动了正文就动 front matter 的 `last_updated`**，并同步 README 索引行。
 6. **一个项目一份文档。** 项目跨主题时按主要矛盾归类，在其他主题下不建副本，只在 README 交叉引用。
-7. **改到的段落顺手把绝对路径换成变量**，别留新的盘符。
+7. **改到的段落顺手把绝对路径换掉**，别留新的盘符。
 8. **不确定就标注**，别猜。用 `> ⚠ 待确认：...` 标出来比写一句可能错的结论好。
 
 ## 5. 提交信息

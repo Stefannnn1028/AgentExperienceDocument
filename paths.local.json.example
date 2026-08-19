@@ -1,9 +1,0 @@
-{
-  "_说明": "本机路径映射。每台开发主机各自维护，不进 git（见 .gitignore）。把 paths.local.json.example 复制成 paths.local.json 再填。",
-  "_用法": "键 = 文档 front matter 里 path_vars 的变量名；值 = 本机绝对路径。留空字符串表示该项目尚未迁到本机。",
-
-  "JLX": "E:\\Project\\嘉立讯标准软件",
-  "CARVEDYU": "E:\\CarveYu\\carvedyu",
-  "CARVEDYU_STALE": "",
-  "DOCS": "E:\\Document"
-}

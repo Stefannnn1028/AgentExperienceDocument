@@ -11,8 +11,13 @@ description: 把当前项目的开发经验增量同步到 AgentExperienceDocume
 
 ## 前置
 
-经验库本地路径：`C:\LFZProject\AgentExperienceDocument`（下称 REPO）。
-不存在就先 `git clone git@github.com:Stefannnn1028/AgentExperienceDocument.git C:\LFZProject\AgentExperienceDocument`。
+经验库（下称 REPO）按顺序定位，用第一个找到的：
+
+1. `git config --global experience.repo` 的值（换机器时设一次即可）；
+2. 与当前项目**同级**的 `AgentExperienceDocument` 目录；
+3. 都没有 → 问用户克隆到哪，然后
+   `git clone git@github.com:Stefannnn1028/AgentExperienceDocument.git <目标目录>`，
+   并把该目录写进 `git config --global experience.repo`。
 
 **开工第一件事**：`git -C REPO pull --rebase`。远端可能被另一台主机改过。
 
@@ -20,17 +25,11 @@ description: 把当前项目的开发经验增量同步到 AgentExperienceDocume
 
 1. **定位当前项目**。用户没指定就取当前工作目录所在的项目根（含 `.git`／`.sln`／`package.json` 的最近上层目录）。
 
-2. **找到对应文档**。读 REPO 下所有 `docs/**/*.md` 的 front matter，按 `projects` 逐条匹配当前项目，命中任一条即算命中该文档：
-   1. `REPO\paths.local.json` 里若已填过该项目所属的变量，直接用它拼出的路径比对；
-   2. 否则比对**目录名** `dir_name`；
-   3. 目录名也对不上时，用 `markers`（特征文件，全部存在才算数）确认。
+2. **找到对应文档**。读 REPO 下所有 `docs/**/*.md` 的 front matter，按 `projects` 逐条匹配当前项目：
+   先比对项目名（`name` 与当前项目目录名），对不上再用 `markers`（特征文件，全部存在才算数）确认。
    命中一份 → 增量更新它；命中多份 → 问用户；**没命中** → 走「新增文档」流程（见下）。
 
-   > `legacy_path` 只是旧主机上的历史值，**仅供追溯，不参与匹配**。
-
-3. **对齐本机路径**。文档正文用 `%VAR%` 写路径（见每份文档的「路径约定」一节）。
-   若 `paths.local.json` 里该变量为空或文件不存在，就用当前项目的实际位置反推填上，并告诉用户填了什么。
-   这个文件**不进 git**，每台主机各自维护。
+3. **（无需路径对齐）** 文档里不存机器路径，跳过。
 
 4. **扫描变化**。以该文档 front matter 的 `last_updated` 为起点：
    ```
@@ -79,6 +78,6 @@ description: 把当前项目的开发经验增量同步到 AgentExperienceDocume
 - **增量优先**。已有结论不会被无声覆盖，冲突一律先问。
 - **绝不 force push**，绝不 `reset --hard` 经验库。
 - 提交前 `git -C REPO status` 确认改动范围符合预期，不要把无关文件带进去。
-- **正文里不许出现带盘符的绝对路径**（`legacy_path` 除外）。新写的路径一律用 `%VAR%`；
-  需要新变量就加进该文档 front matter 的 `path_vars` 和「路径约定」表，并同步 `paths.local.json.example`。
+- **正文里不许出现带盘符的绝对路径**（见 CONVENTIONS.md §3）。项目用名字指代，
+  文件用仓库内相对路径 + 行号；区分副本按内容特征，不按位置。
 - 无头/定时模式下不向用户提问：此时**跳过**所有需要提问的分支（结论冲突、新增文档、多文档命中），把它们列进汇报里留给人处理。
