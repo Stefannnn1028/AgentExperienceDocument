@@ -14,6 +14,7 @@
 | 文档 | 一句话 | 关联项目 | 状态 | 更新 |
 |---|---|---|---|---|
 | [DiagAgent 现场诊断助手](docs/agent/diagagent-field-diagnosis.md) | 本地小模型 + 只读工具层，让现场调试员自助排障；15/15 场景零"自信的错误结论" | `DiagAgent` | 活跃 | 2026-08-19 |
+| [HuikeAgent 主干道 + 插件架构](docs/agent/huikeagent-trunk-and-plugins.md) | 把整个视觉软件重建成 Agent 可调用的形状：8 个扩展维度、7 个封闭动词、264 条守卫；**但 Agent 那侧还没接过真实模型** | `HuikeAgent` | 活跃 | 2026-08-19 |
 
 ### 🧪 testing —— 测试体系与质量保障
 
