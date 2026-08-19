@@ -13,7 +13,7 @@
 
 | 文档 | 一句话 | 关联项目 | 状态 | 更新 |
 |---|---|---|---|---|
-| [DiagAgent 现场诊断助手](docs/agent/diagagent-field-diagnosis.md) | 本地小模型 + 只读工具层，让现场调试员自助排障；15/15 场景零"自信的错误结论" | `E:\Project\嘉立讯标准软件\自研算子\DiagAgent` | 活跃 | 2026-08-19 |
+| [DiagAgent 现场诊断助手](docs/agent/diagagent-field-diagnosis.md) | 本地小模型 + 只读工具层，让现场调试员自助排障；15/15 场景零"自信的错误结论" | `DiagAgent` | 活跃 | 2026-08-19 |
 
 ### 🧪 testing —— 测试体系与质量保障
 
@@ -46,3 +46,10 @@
 4. 同步本 README 索引，然后 commit & push。
 
 规则见 [CONVENTIONS.md](CONVENTIONS.md)。所有写入都是增量的 —— 已有结论不会被无声覆盖，冲突会先问你。
+
+## 路径为什么长这样
+
+文档正文里的路径写成 `%JLX%\自研算子\` 这种**变量形式**，不带盘符 —— 换主机盘符就变，写死的路径是文档最先烂掉的部分。
+
+变量的本机实际值填在 `paths.local.json`（从 `paths.local.json.example` 复制，**不进 git**，每台主机各自维护）。
+每份文档正文开头都有一张「路径约定」表，说明它用到哪些变量、旧主机上分别是什么值。
