@@ -1,4 +1,4 @@
-# 把仓库里的 sync-experience 技能安装到用户级技能目录，使其在任意项目下可用。
+﻿# 把仓库里的 sync-experience 技能安装到用户级技能目录，使其在任意项目下可用。
 # 仓库是唯一真源；改了 SKILL.md 后重跑本脚本即可。
 # 用法: powershell -ExecutionPolicy Bypass -File install.ps1
 $src = Split-Path -Parent $PSScriptRoot
