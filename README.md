@@ -14,7 +14,7 @@
 | 文档 | 一句话 | 关联项目 | 状态 | 更新 |
 |---|---|---|---|---|
 | [DiagAgent 现场诊断助手](docs/agent/diagagent-field-diagnosis.md) | 本地小模型 + 只读工具层，让现场调试员自助排障；15/15 场景零"自信的错误结论" | `DiagAgent` | 活跃 | 2026-08-19 |
-| [HuikeAgent 主干道 + 插件架构](docs/agent/huikeagent-trunk-and-plugins.md) | 把整个视觉软件重建成 Agent 可调用的形状：8 个扩展维度、7 个封闭动词、523 条守卫，相机已接真机；本地 Claude 账号已接上，**但 Agent 那侧的场景库只有 1 条**。§4 有 30 条可引用的硬经验，多数来自现场驱动的排查 | `HuikeAgent` | 活跃 | 2026-08-24 |
+| [HuikeAgent 主干道 + 插件架构](docs/agent/huikeagent-trunk-and-plugins.md) | 把整个视觉软件重建成 Agent 可调用的形状：8 个扩展维度、7 个封闭动词、586 条守卫，相机已接真机。**Agent 那侧最大的欠账已填**：10 条场景 + 自动评分，Claude / 本地 qwen3:8b 都 10/10 过 Phase 1（裸模型不微调即达标）。§4 有 34 条可引用的硬经验——4.27–4.30 讲评测抓到的两个缺陷、投影必须能重算、判分对账为何不用版本号 | `HuikeAgent` | 活跃 | 2026-08-25 |
 
 ### 🧪 testing —— 测试体系与质量保障
 
